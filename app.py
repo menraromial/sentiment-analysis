@@ -15,18 +15,18 @@ import module
 
 
 # Create flask app
-flask_app = Flask(__name__)
+app = Flask(__name__)
 
 vector = load("vectors.joblib")
 model = load("model.joblib")
 stop_words = stopwords.words('english')
 wordnet_lem = WordNetLemmatizer()
 
-@flask_app.route("/")
+@app.route("/")
 def Home():
     return render_template("index.html")
 
-@flask_app.route("/predict", methods = ["POST"])
+@app.route("/predict", methods = ["POST"])
 def predict():
     
     text=[request.form.get("text")]
@@ -48,4 +48,4 @@ def predict():
 
 
 if __name__ == "__main__":
-    flask_app.run(debug=True)
+    app.run(debug=True)
