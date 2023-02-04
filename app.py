@@ -39,7 +39,7 @@ def predict():
     #prediction
     vec = vector.transform(df['text'])
     prediction = model.predict_proba(vec)
-    prediction = int(prediction)
+    prediction = int(prediction[0])
     if prediction >0:
         prediction="positive"
     else:
