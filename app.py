@@ -38,8 +38,8 @@ def predict():
     df['text'] = df['text'].apply(wordnet_lem.lemmatize)
     #prediction
     vec = vector.transform(df['text'])
-    prediction = model.predict_proba(vec)
-    prediction = int(prediction[0])
+    prediction = model.predict(vec)
+    prediction = int(prediction)
     if prediction >0:
         prediction="positive"
     else:
