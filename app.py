@@ -15,18 +15,18 @@ import module
 
 
 # Create flask app
-app = Flask(__name__)
+flask_app = Flask(__name__)
 
 vector = load("vectors.joblib")
 model = load("model.joblib")
 stop_words = stopwords.words('english')
 wordnet_lem = WordNetLemmatizer()
 
-@app.route("/")
+@flask_app.route("/")
 def Home():
     return render_template("index.html")
 
-@app.route("/predict", methods = ["POST"])
+@flask_app.route("/predict", methods = ["POST"])
 def predict():
     
     text=[request.form.get("text")]
@@ -39,13 +39,19 @@ def predict():
     #prediction
     vec = vector.transform(df['text'])
     prediction = model.predict(vec)
+    print(prediction)
     prediction = int(prediction)
+    proba = model.predict_proba(vec)
+    print("proportion",proba[0][0])
+    ra=round(proba[0][1],2)
+    ng=round(proba[0][0],2)
     if prediction >0:
         prediction="positive"
+        
     else:
         prediction = "negative"
-    return render_template("index.html", prediction_text = "sentiment: {} ".format(prediction))
-
+        
+    return render_template("index.html", datas=["sentiment: {} ".format(prediction),"Positive Rating: {} ".format(ra),"Negative Rating: {} ".format(ng)])
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    flask_app.run(debug=True)
